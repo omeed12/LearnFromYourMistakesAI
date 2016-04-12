@@ -1,0 +1,170 @@
+fileFormatVersion: 2
+guid: dbc89cc54e74f39468c715c8423dea2c
+timeCreated: 1438282264
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Factice003
+    100002: //RootNode
+    100004: GIANT_WORM_
+    100006: GIANT_WORM_ Head
+    100008: GIANT_WORM_ Neck
+    100010: GIANT_WORM_ Neck1
+    100012: GIANT_WORM_ Neck2
+    100014: GIANT_WORM_ Neck3
+    100016: GIANT_WORM_ Neck4
+    100018: GIANT_WORM_ Pelvis
+    100020: GIANT_WORM_ Spine
+    100022: GIANT_WORM_ Tail
+    100024: GIANT_WORM_ Tail1
+    100026: GIANT_WORM_ Tail2
+    100028: GIANT_WORM_ Tail3
+    100030: GIANT_WORM_ Tail4
+    100032: GIANT_WORM_JAW_LEFT
+    100034: GIANT_WORM_JAW_RIGHT
+    100036: GIANT_WORM_MOUTH
+    100038: GIANT_WORM_SPAWNER_PULSE_BOTTOM_A
+    100040: GIANT_WORM_SPAWNER_PULSE_BOTTOM_B
+    100042: GIANT_WORM_SPAWNER_PULSE_LEFT_A
+    100044: GIANT_WORM_SPAWNER_PULSE_LEFT_B
+    100046: GIANT_WORM_SPAWNER_PULSE_RIGHT_A
+    100048: GIANT_WORM_SPAWNER_PULSE_RIGHT_B
+    100050: GIANT_WORM_SPAWNER_PULSE_TOP_A
+    100052: GIANT_WORM_SPAWNER_PULSE_TOP_B
+    100054: GIANT_WORM_SPHINCTER_A
+    100056: GIANT_WORM_SPHINCTER_B
+    100058: GIANT_WORM_SPHINCTER_C
+    100060: GIANT_WORM_SPHINCTER_D
+    100062: GIANT_WORM_SPHINCTER_E
+    100064: GIANT_WORM_SPHINCTER_F
+    100066: GIANT_WORM_SPHINCTER_G
+    100068: GIANT_WORM_SPHINCTER_H
+    100070: GIANT_WORM_TOOTH_A
+    100072: GIANT_WORM_TOOTH_B
+    100074: GIANT_WORM_TOOTH_C
+    100076: GIANT_WORM_TOOTH_D
+    100078: GIANT_WORM_TOOTH_E
+    100080: GIANT_WORM_TOOTH_F
+    100082: GIANT_WORM_TOOTH_G
+    100084: GIANT_WORM_TOOTH_H
+    100086: GIANT_WORM_WEAK_POINT_LEFT_A
+    100088: GIANT_WORM_WEAK_POINT_LEFT_B
+    100090: GIANT_WORM_WEAK_POINT_LEFT_C
+    100092: GIANT_WORM_WEAK_POINT_RIGHT_A
+    100094: GIANT_WORM_WEAK_POINT_RIGHT_B
+    100096: GIANT_WORM_WEAK_POINT_RIGHT_C
+    400000: Factice003
+    400002: //RootNode
+    400004: GIANT_WORM_
+    400006: GIANT_WORM_ Head
+    400008: GIANT_WORM_ Neck
+    400010: GIANT_WORM_ Neck1
+    400012: GIANT_WORM_ Neck2
+    400014: GIANT_WORM_ Neck3
+    400016: GIANT_WORM_ Neck4
+    400018: GIANT_WORM_ Pelvis
+    400020: GIANT_WORM_ Spine
+    400022: GIANT_WORM_ Tail
+    400024: GIANT_WORM_ Tail1
+    400026: GIANT_WORM_ Tail2
+    400028: GIANT_WORM_ Tail3
+    400030: GIANT_WORM_ Tail4
+    400032: GIANT_WORM_JAW_LEFT
+    400034: GIANT_WORM_JAW_RIGHT
+    400036: GIANT_WORM_MOUTH
+    400038: GIANT_WORM_SPAWNER_PULSE_BOTTOM_A
+    400040: GIANT_WORM_SPAWNER_PULSE_BOTTOM_B
+    400042: GIANT_WORM_SPAWNER_PULSE_LEFT_A
+    400044: GIANT_WORM_SPAWNER_PULSE_LEFT_B
+    400046: GIANT_WORM_SPAWNER_PULSE_RIGHT_A
+    400048: GIANT_WORM_SPAWNER_PULSE_RIGHT_B
+    400050: GIANT_WORM_SPAWNER_PULSE_TOP_A
+    400052: GIANT_WORM_SPAWNER_PULSE_TOP_B
+    400054: GIANT_WORM_SPHINCTER_A
+    400056: GIANT_WORM_SPHINCTER_B
+    400058: GIANT_WORM_SPHINCTER_C
+    400060: GIANT_WORM_SPHINCTER_D
+    400062: GIANT_WORM_SPHINCTER_E
+    400064: GIANT_WORM_SPHINCTER_F
+    400066: GIANT_WORM_SPHINCTER_G
+    400068: GIANT_WORM_SPHINCTER_H
+    400070: GIANT_WORM_TOOTH_A
+    400072: GIANT_WORM_TOOTH_B
+    400074: GIANT_WORM_TOOTH_C
+    400076: GIANT_WORM_TOOTH_D
+    400078: GIANT_WORM_TOOTH_E
+    400080: GIANT_WORM_TOOTH_F
+    400082: GIANT_WORM_TOOTH_G
+    400084: GIANT_WORM_TOOTH_H
+    400086: GIANT_WORM_WEAK_POINT_LEFT_A
+    400088: GIANT_WORM_WEAK_POINT_LEFT_B
+    400090: GIANT_WORM_WEAK_POINT_LEFT_C
+    400092: GIANT_WORM_WEAK_POINT_RIGHT_A
+    400094: GIANT_WORM_WEAK_POINT_RIGHT_B
+    400096: GIANT_WORM_WEAK_POINT_RIGHT_C
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,13 @@
+1) Problem: Flickering from some terrain scenes.
+
+Solution: The flickering is caused by your scene's Camera's clipping settings.  It's not an issue with the terrains.  Sometimes when you set a low number for your camera "CLIPPING PLANES" setting, the terrains might flicker due to the longer distance.  You have to set a higher number for the "Far" property of Clipping Planes.
+
+
+2) Problem: The terrains display as low quality in the editor, and different from the screenshots. 
+
+Solution: This is normal and there is nothing wrong with the terrains.  Large terrain objects are apparently LOD'd inside the Unity editor to speed up performance during development.  To get Unity to display the terrain at full high quality resolution in the editor, simply try this trick:
+- Click on the terrain.
+- Click on Smooth Height.
+- Set Brush Size to 1, Set Opacity to 0.
+- Click and drag your mouse all over the terrain as if you're painting it.
+- Notice that areas you click will automatically switch over to the high quality LOD version!

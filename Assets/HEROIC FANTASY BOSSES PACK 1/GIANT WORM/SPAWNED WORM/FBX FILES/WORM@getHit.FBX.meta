@@ -1,0 +1,116 @@
+fileFormatVersion: 2
+guid: 68edc7ba8f2f97149bb213a88b264a65
+timeCreated: 1438289005
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Factice001
+    100002: Factice002
+    100004: //RootNode
+    100006: WORM_
+    100008: WORM_ Head
+    100010: WORM_ Neck
+    100012: WORM_ Pelvis
+    100014: WORM_ Spine
+    100016: WORM_ Tail
+    100018: WORM_ Tail1
+    100020: WORM_ Tail2
+    100022: WORM_ Tail3
+    100024: WORM_ Tail4
+    100026: WORM_MOUTH
+    100028: WORM_TOOTH_A
+    100030: WORM_TOOTH_B
+    100032: WORM_TOOTH_C
+    100034: WORM_TOOTH_D
+    100036: WORM_TOOTH_E
+    100038: WORM_TOOTH_F
+    100040: WORM_TOOTH_G
+    100042: WORM_TOOTH_H
+    400000: Factice001
+    400002: Factice002
+    400004: //RootNode
+    400006: WORM_
+    400008: WORM_ Head
+    400010: WORM_ Neck
+    400012: WORM_ Pelvis
+    400014: WORM_ Spine
+    400016: WORM_ Tail
+    400018: WORM_ Tail1
+    400020: WORM_ Tail2
+    400022: WORM_ Tail3
+    400024: WORM_ Tail4
+    400026: WORM_MOUTH
+    400028: WORM_TOOTH_A
+    400030: WORM_TOOTH_B
+    400032: WORM_TOOTH_C
+    400034: WORM_TOOTH_D
+    400036: WORM_TOOTH_E
+    400038: WORM_TOOTH_F
+    400040: WORM_TOOTH_G
+    400042: WORM_TOOTH_H
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
