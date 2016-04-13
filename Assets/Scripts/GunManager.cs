@@ -26,10 +26,6 @@ public class GunManager : MonoBehaviour {
     public void Update()
     {
         currentTime += Time.deltaTime;
-        //Vector3 loc = muzzleFlash.transform.position;
-        //loc = gameObject.transform.position;
-        //loc.y += 1;
-        //muzzleFlash.transform.position = loc;
         
     }
 

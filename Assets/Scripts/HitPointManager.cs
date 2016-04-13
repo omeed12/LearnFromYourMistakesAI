@@ -7,10 +7,13 @@ public class HitPointManager : MonoBehaviour {
     public int hitPoints;
     public int maxHitPoints;
     public GameObject slider;
+    public double invTime;
+    double invTimer;
 
 	// Use this for initialization
 	void Start () {
         hitPoints = maxHitPoints;
+        invTimer = invTime;
 	}
 	
 	// Update is called once per frame
@@ -18,7 +21,9 @@ public class HitPointManager : MonoBehaviour {
         if (slider != null)
         {
             slider.GetComponent<Slider>().value = ((float)hitPoints) / maxHitPoints;
+            invTimer += Time.deltaTime;
         }
+
 	
 	}
 
@@ -44,6 +49,10 @@ public class HitPointManager : MonoBehaviour {
 
     internal void subtractHP(int value)
     {
-        setHitPoints(hitPoints - value);
+        if (invTimer > invTime)
+        {
+            setHitPoints(hitPoints - value);
+            invTimer = 0;
+        }
     }
 }

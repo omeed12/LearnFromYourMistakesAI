@@ -10,6 +10,7 @@ public class MoveRex : MonoBehaviour {
 	GameObject go2;
 	GameObject go3;
 	CharacterController character;
+    LearningSystem learningSystem;
 	int facing = -1;
 	string attack;
 	LearningSystem ls;
@@ -18,6 +19,11 @@ public class MoveRex : MonoBehaviour {
 	public int TailAttackDMG;
 	public int FireballDMG;
 	public int SpreadFireDMG;
+
+    static int BiteID = 0;
+    static int TailID = 1;
+    static int FireballID = 2;
+    static int SpreadFireID = 3;
 
 	public GameObject firePrefab; //flamethrower prefab
 	public Rigidbody wall;	//wall of fire prefab
@@ -39,7 +45,6 @@ public class MoveRex : MonoBehaviour {
 		
 		Rigidbody fb1 = GetComponent<Rigidbody> ();
 		fb1 = Instantiate (wall, new Vector3 (-4.0f, 3.0f, -10.0f), Quaternion.Euler(0,90,0)) as Rigidbody;
-		
 		Destroy (fb1.gameObject, 7.5f);
 
 	}
@@ -49,6 +54,10 @@ public class MoveRex : MonoBehaviour {
 		
 		GameObject spreadfire;
 		spreadfire = Instantiate (firePrefab, fireSpawn.position,Quaternion.Euler(0,0,0)) as GameObject;
+        //PlayerCollisionManager pcManager = spreadfire.gameObject.GetComponent<PlayerCollisionManager>();
+        //pcManager.attackId = SpreadFireID;
+        //pcManager.bossParent = gameObject;
+
 		Destroy (spreadfire.gameObject,2.0f);
 		
 		StartCoroutine ("firesprd2");
@@ -65,24 +74,26 @@ public class MoveRex : MonoBehaviour {
 		go1 = GameObject.Find("GameObject1");
 		go2 = GameObject.Find("GameObject2");
 		go3 = GameObject.Find("GameObject3");
+        learningSystem = GetComponent<LearningSystem>();
 	}
 
-	void generateAttack() {
+	internal void generateAttack() {
+        ls.debugDisplayProbabilities();
 		int attack;
-		attack = ls.getAttack();
+        attack = ls.getAttack();
 		
-		if (attack == 0) {
+		if (attack == BiteID) {
 			Bite();
 		}
-		else if (attack == 1) {
+		else if (attack == TailID) {
 			TailAttack();
 			
 		}
-		else if (attack == 2) {
+		else if (attack == FireballID) {
 			Fireball();
 			
 		}
-		else if (attack == 3) {
+		else if (attack == SpreadFireID) {
 			SpreadFire();
 			
 		}
@@ -168,53 +179,90 @@ public class MoveRex : MonoBehaviour {
 		}
 	}
 
-	void takeDMGFromBoss2(string attack) {
-		if (attack == "bite") {
+	internal void takeDMGFromBoss(int attack, bool updateLS) {
+		if (attack == BiteID) {
 			player.GetComponent<HitPointManager>().subtractHP(BiteDMG);
+            if (updateLS)
+                ls.updateAttack(BiteID, BiteDMG);
 		}
-		else if (attack == "tailAttack") {
+		else if (attack == TailID) {
 			player.GetComponent<HitPointManager>().subtractHP(TailAttackDMG);
-		}
-		else if (attack == "spitFireball") {
+            if (updateLS)
+                ls.updateAttack(TailID, TailAttackDMG);
+        }
+		else if (attack == FireballID) {
 			player.GetComponent<HitPointManager>().subtractHP(FireballDMG);
-		}
-		else if (attack == "spreadFire") {
+            if (updateLS)
+                ls.updateAttack(FireballID, FireballDMG);
+        }
+		else if (attack == SpreadFireID) {
 			player.GetComponent<HitPointManager>().subtractHP(SpreadFireDMG);
-		}
+            if (updateLS)
+                ls.updateAttack(SpreadFireID, SpreadFireDMG);
+        }
 	}
+
+    internal void missedAttack(int attack)
+    {
+        if (attack == BiteID)
+        {
+            ls.updateAttack(BiteID, -BiteDMG);
+        }
+        else if (attack == TailID)
+        {
+            ls.updateAttack(TailID, -TailAttackDMG);
+        }
+        else if (attack == FireballID)
+        {
+            ls.updateAttack(FireballID, -FireballDMG);
+        }
+        else if (attack == SpreadFireID)
+        {
+            ls.updateAttack(SpreadFireID, -SpreadFireDMG);
+        }
+    }
 
 	// Update is called once per frame
 	void Update () {
-		transform.position = new Vector3 (0, transform.position.y, transform.position.z);
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("death"))
+        {
+            transform.position = new Vector3(0, transform.position.y, transform.position.z);
 
 
-		if (transform.position.z < player.transform.position.z)
-		{
-			setFacing(1);
-		}
-		else
-		{
-			setFacing(-1);
-		}
-		
-		if (boss2.GetComponent<HitPointManager> ().isDead()) {
-			anim.SetTrigger ("death");
-		}
-	
-		if (Input.GetKey ("up")) {
-			Fireball ();
-		}
+            if (transform.position.z < player.transform.position.z)
+            {
+                setFacing(1);
+            }
+            else
+            {
+                setFacing(-1);
+            }
 
-		if (Input.GetKey ("down")) {
-			Bite ();
-		}
+            if (boss2.GetComponent<HitPointManager>().isDead())
+            {
+                anim.SetTrigger("death");
+            }
 
-		if (Input.GetKey ("right")) {
-			SpreadFire ();
-		}
+            if (Input.GetKeyDown("up"))
+            {
+                Fireball();
+            }
 
-		if (Input.GetKey ("left")) {
-			TailAttack ();
-		}
+            if (Input.GetKeyDown("down"))
+            {
+                Bite();
+            }
+
+            if (Input.GetKeyDown("right"))
+            {
+                SpreadFire();
+            }
+
+            if (Input.GetKeyDown("left"))
+            {
+                TailAttack();
+            }
+        }
+        
 	}
 }

@@ -5,6 +5,7 @@ using System;
 public class PlayerControls : MonoBehaviour {
 
     EntityInfo entityInfo;
+    public int canShootAt;
     public bool cheatsOn = true;
     public GameObject lookObject;
     public GameObject equippedGun;
@@ -16,8 +17,6 @@ public class PlayerControls : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-		boss1 = GameObject.Find("GIANT_WORM");
-		boss2 = GameObject.Find("DRAGON_REX_ALPHA");
         entityInfo = gameObject.GetComponent<EntityInfo>();
     }
 
@@ -64,34 +63,41 @@ public class PlayerControls : MonoBehaviour {
             entityInfo.jump();
         }
 
-
-
+        
        
         shootRay = new Ray(equippedGun.transform.position, lookObject.transform.position - equippedGun.transform.position);
-        Debug.DrawLine(equippedGun.transform.position, lookObject.transform.position);
+
         if (Input.GetMouseButton(0)) // Left button click
         {
             if (equippedGun != null && equippedGun.GetComponent<GunManager>().canShoot())
             {
-                //equippedGun.GetComponent<GunManager>().muzzleFlash.GetComponent<ParticleSystem>().Play();
 
-                if (Physics.Raycast(shootRay, out hitInfo, equippedGun.GetComponent<GunManager>().aimDistance))
+                if (Physics.Raycast(shootRay, out hitInfo, equippedGun.GetComponent<GunManager>().aimDistance, 1))
                 {
                     // Hit something
                     UnityEngine.Object clone = Instantiate(equippedGun.GetComponent<GunManager>().bullet, hitInfo.point, Quaternion.identity);
                     Destroy(clone, 1f);
 
-                    if (hitInfo.collider.name == "GIANT_WORM")
+                    if (hitInfo.collider.tag == "Boss") 
                     {
-                        boss1.GetComponent<HitPointManager>().subtractHP(equippedGun.GetComponent<GunManager>().damage);
+                        //Debug.Log(hitInfo.collider.gameObject.layer);
+                        hitInfo.collider.gameObject.GetComponent<HitPointManager>().subtractHP(equippedGun.GetComponent<GunManager>().damage);
                     }
-					else if (hitInfo.collider.name == "DRAGON_REX_ALPHA"){
-						boss2.GetComponent<HitPointManager>().subtractHP(equippedGun.GetComponent<GunManager>().damage);
-					}
 
                 }
 
             }
+        }
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Debug.Log("Quit");
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Cursor.visible = !Cursor.visible;
         }
 
         if (cheatsOn)
