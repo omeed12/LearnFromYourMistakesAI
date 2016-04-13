@@ -2,12 +2,9 @@
 using System.Collections;
 
 public class MethodHandler : MonoBehaviour {
-
-    Animator anim;
-
+    
 	// Use this for initialization
 	void Start () {
-        anim = gameObject.GetComponent<Animator>();
 	
 	}
 	
@@ -20,6 +17,9 @@ public class MethodHandler : MonoBehaviour {
         if (gameObject.name == "DRAGON_REX_ALPHA")
         {
             gameObject.GetComponent<MoveRex>().generateAttack();
+        } else
+        {
+            gameObject.GetComponent<MoveWorm>().generateAttack();
         }
     }
 
@@ -28,6 +28,9 @@ public class MethodHandler : MonoBehaviour {
         if (gameObject.name == "DRAGON_REX_ALPHA")
         {
             gameObject.GetComponent<MoveRex>().takeDMGFromBoss(attack, updateLS);
+        } else
+        {
+            gameObject.GetComponent<MoveWorm>().takeDMGFromBoss(attack, updateLS);
         }
     }
 
@@ -36,6 +39,9 @@ public class MethodHandler : MonoBehaviour {
         if (gameObject.name == "DRAGON_REX_ALPHA")
         {
             gameObject.GetComponent<MoveRex>().missedAttack(attack);
+        } else
+        {
+            gameObject.GetComponent<MoveWorm>().missedAttack(attack);
         }
     }
 }

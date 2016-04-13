@@ -4,9 +4,8 @@ using System.Collections;
 public class MoveWorm : MonoBehaviour {
 
 	Animator anim;
-	public GameObject spitPrefab;
-	GameObject player;
-	GameObject boss1;
+    GameObject player;
+    public GameObject spitPrefab;
 	GameObject go1;
 	GameObject go2;
 	GameObject go3;
@@ -19,6 +18,10 @@ public class MoveWorm : MonoBehaviour {
 	public int SpitDMG;
 	public int PukeDMG;	
 	LearningSystem ls;
+    static int BiteID = 0;
+    static int UndergroundBiteID = 1;
+    static int SpitID = 2;
+    static int PukeID = 3;
 
 	public Transform sbSpawn; //spawns the projectile
 	public Rigidbody projectile; //projectile prefab
@@ -58,17 +61,15 @@ public class MoveWorm : MonoBehaviour {
 	void Start () {
 		anim = GetComponent<Animator>();
 		ls = GetComponent<LearningSystem> ();
-		
-		player = GameObject.Find("Player");
-		boss1 = GameObject.Find("GIANT_WORM");
+        player = GameObject.Find("Player");
 		go1 = GameObject.Find("GameObject1");
 		go2 = GameObject.Find("GameObject2");
 		go3 = GameObject.Find("GameObject3");
 		go4 = GameObject.Find("GameObject4");
 
-	}
+    }
 
-	void generateAttack() {
+	internal void generateAttack() {
 		int attack;
 		attack = ls.getAttack();
 		
@@ -124,56 +125,84 @@ public class MoveWorm : MonoBehaviour {
 
 	void teleport() {
 		if (attack == "bite") {
-			boss1.transform.position = new Vector3(transform.position.x,transform.position.y,go4.transform.position.z);
+			gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go4.transform.position.z);
 		} 
 		else if (attack == "undergroundbite"){
-			boss1.transform.position = new Vector3(transform.position.x,transform.position.y,go2.transform.position.z);
+			gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go2.transform.position.z);
 		}
 		
 		else if (attack == "spit"){
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				boss1.transform.position = new Vector3(transform.position.x,transform.position.y,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go1.transform.position.z);
 			}
 			else {
-				boss1.transform.position = new Vector3(transform.position.x,transform.position.y,go3.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go3.transform.position.z);
 			}
 		}
 		
 		else if (attack == "roarpuke"){
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				boss1.transform.position = new Vector3(transform.position.x,transform.position.y,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go1.transform.position.z);
 			}
 			else {
-				boss1.transform.position = new Vector3(transform.position.x,transform.position.y,go3.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go3.transform.position.z);
 			}
 		}
 	}
 
 
 	void fade() {
-		boss1.SetActive(false);
+		gameObject.SetActive(false);
 	}
 
-	void takeDMGFromBoss1(string attack) {
-		if (attack == "bite") {
+	internal void takeDMGFromBoss(int attack, bool updateLS) {
+		if (attack == BiteID) {
 			player.GetComponent<HitPointManager>().subtractHP(BiteDMG);
-		}
-		else if (attack == "undergroundbite") {
+            if (updateLS)
+                ls.updateAttack(BiteID, BiteDMG);
+        }
+		else if (attack == UndergroundBiteID) {
 			player.GetComponent<HitPointManager>().subtractHP(UndergroundBiteDMG);
-		}
-		else if (attack == "spit") {
+            if (updateLS)
+                ls.updateAttack(UndergroundBiteID, UndergroundBiteDMG);
+        }
+		else if (attack == SpitID) {
 			player.GetComponent<HitPointManager>().subtractHP(SpitDMG);
-		}
-		else if (attack == "roarpuke") {
+            if (updateLS)
+                ls.updateAttack(SpitID, SpitDMG);
+        }
+		else if (attack == PukeID) {
 			player.GetComponent<HitPointManager>().subtractHP(PukeDMG);
-		}
+            if (updateLS)
+                ls.updateAttack(PukeID, PukeDMG);
+        }
 	}
 
+    internal void missedAttack(int attack)
+    {
+        if (attack == BiteID)
+        {
+            ls.updateAttack(BiteID, -BiteDMG);
+        }
+        else if (attack == UndergroundBiteID)
+        {
+            ls.updateAttack(UndergroundBiteID, -UndergroundBiteDMG);
+        }
+        else if (attack == SpitID)
+        {
+            ls.updateAttack(SpitID, -SpitDMG);
+        }
+        else if (attack == PukeID)
+        {
+            ls.updateAttack(PukeID, -PukeDMG);
+        }
+    }
 
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 
 		transform.position = new Vector3 (500,transform.position.y,transform.position.z) ;
 
@@ -186,25 +215,25 @@ public class MoveWorm : MonoBehaviour {
 			setFacing(-1);
 		}
 
-		if (boss1.GetComponent<HitPointManager> ().isDead()) {
+		if (gameObject.GetComponent<HitPointManager> ().isDead()) {
 			anim.SetTrigger ("isDead");
 		}
 
-		if (Input.GetKey ("up")) {
+		if (Input.GetKeyDown ("up")) {
 			Spit();
 
 		}
 		
-		if (Input.GetKey ("down")) {
+		if (Input.GetKeyDown ("down")) {
 			UndergroundBite();
 
 		}
 		
-		if (Input.GetKey ("right")) {
+		if (Input.GetKeyDown ("right")) {
 			Bite();
 		}
 		
-		if (Input.GetKey ("left")) {
+		if (Input.GetKeyDown ("left")) {
 			Puke();
 		}
 	}

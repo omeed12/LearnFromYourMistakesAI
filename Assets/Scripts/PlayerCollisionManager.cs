@@ -5,7 +5,8 @@ public class PlayerCollisionManager : MonoBehaviour
 {
     bool hitPlayer;
     public int attackId;
-    public GameObject bossParent;
+    public string parent;
+    GameObject bossParent;
     GameObject bossDragon;
     GameObject bossWorm;
 
@@ -13,16 +14,8 @@ public class PlayerCollisionManager : MonoBehaviour
     void Start()
     {
         hitPlayer = false;
-        bossDragon = GameObject.Find("DRAGON_REX_ALPHA");
-        bossWorm = GameObject.Find("GIANT_WORM");
 
-        if (bossDragon != null)
-        {
-            bossParent = bossDragon;
-        } else
-        {
-            bossParent = bossWorm;
-        }
+        bossParent = GameObject.Find(parent);
     }
 
     // Update is called once per frame
