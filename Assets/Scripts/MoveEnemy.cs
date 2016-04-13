@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MoveEnemy : MonoBehaviour {
 
-	GameObject player;
+//	GameObject player;
 	GameObject boss1;
 	GameObject go1;
 	GameObject go2;
@@ -18,7 +18,7 @@ public class MoveEnemy : MonoBehaviour {
 		ls = GetComponent<LearningSystem> ();
 
 		GetComponent<Animation> ().Play ("ariseHigh");
-		player = GameObject.Find("Player");
+		//player = GameObject.Find("Player");
 		boss1 = GameObject.Find("GIANT_WORM");
 		go1 = GameObject.Find("GameObject1");
 		go2 = GameObject.Find("GameObject2");

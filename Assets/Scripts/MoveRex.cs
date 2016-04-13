@@ -5,12 +5,9 @@ public class MoveRex : MonoBehaviour {
 
 	Animator anim;
 	GameObject player;
-	GameObject boss2;
 	GameObject go1;
 	GameObject go2;
 	GameObject go3;
-	CharacterController character;
-    LearningSystem learningSystem;
 	int facing = -1;
 	string attack;
 	LearningSystem ls;
@@ -67,14 +64,13 @@ public class MoveRex : MonoBehaviour {
 	void Start () {
 		anim = GetComponent<Animator>();
 		ls = GetComponent<LearningSystem>();
-		character = GetComponent<CharacterController>();
+		//character = GetComponent<CharacterController>();
 		
 		player = GameObject.Find("Player");
-		boss2 = GameObject.Find("DRAGON_REX_ALPHA");
+		//gameObject = GameObject.Find("DRAGON_REX_ALPHA");
 		go1 = GameObject.Find("GameObject1");
 		go2 = GameObject.Find("GameObject2");
 		go3 = GameObject.Find("GameObject3");
-        learningSystem = GetComponent<LearningSystem>();
 	}
 
 	internal void generateAttack() {
@@ -152,29 +148,29 @@ public class MoveRex : MonoBehaviour {
 
 	void teleport() {
 		if (attack == "bite") {
-			boss2.transform.position = new Vector3(transform.position.x,go3.transform.position.y,go3.transform.position.z);
+			gameObject.transform.position = new Vector3(transform.position.x, go3.transform.position.y, go3.transform.position.z);
 		} 
 		else if (attack == "tailAttack"){
-			boss2.transform.position = new Vector3(transform.position.x,go3.transform.position.y,go3.transform.position.z);
+			gameObject.transform.position = new Vector3(transform.position.x,go3.transform.position.y,go3.transform.position.z);
 		}
 		
 		else if (attack == "spitFireball"){
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				boss2.transform.position = new Vector3(transform.position.x,0,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,go1.transform.position.z);
 			}
 			else {
-				boss2.transform.position = new Vector3(transform.position.x,0,go2.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,go2.transform.position.z);
 			}
 		}
 		
 		else if (attack == "spreadFire"){
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				boss2.transform.position = new Vector3(transform.position.x,0,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,go1.transform.position.z);
 			}
 			else {
-				boss2.transform.position = new Vector3(transform.position.x,0,go2.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,go2.transform.position.z);
 			}
 		}
 	}
@@ -238,7 +234,7 @@ public class MoveRex : MonoBehaviour {
                 setFacing(-1);
             }
 
-            if (boss2.GetComponent<HitPointManager>().isDead())
+            if (gameObject.GetComponent<HitPointManager>().isDead())
             {
                 anim.SetTrigger("death");
             }
