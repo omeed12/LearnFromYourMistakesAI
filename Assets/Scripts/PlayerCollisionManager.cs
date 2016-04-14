@@ -7,8 +7,6 @@ public class PlayerCollisionManager : MonoBehaviour
     public int attackId;
     public string parent;
     GameObject bossParent;
-    GameObject bossDragon;
-    GameObject bossWorm;
 
     // Use this for initialization
     void Start()
@@ -28,7 +26,6 @@ public class PlayerCollisionManager : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-
             bossParent.GetComponent<MethodHandler>().takeDMGFromBoss(attackId, !hitPlayer);
 
             hitPlayer = true;

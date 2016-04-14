@@ -8,8 +8,6 @@ public class GunManager : MonoBehaviour {
     public int damage;
     float currentTime;
     Aiming aiming;
-    public GameObject muzzleFlash;
-    public GameObject hitEffect;
     public GameObject bullet;
 
 

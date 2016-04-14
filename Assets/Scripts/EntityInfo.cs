@@ -70,6 +70,7 @@ class AnimationTimer
 public class EntityInfo : MonoBehaviour {
 
     CharacterController characterController;
+    HitPointManager hitPointManager;
 
     AnimationTimer crouchToStandTimer;
     AnimationTimer standToCrouchTimer;
@@ -159,6 +160,8 @@ public class EntityInfo : MonoBehaviour {
     void Start()
     {
         characterController = gameObject.GetComponent<CharacterController>();
+        hitPointManager = gameObject.GetComponent<HitPointManager>();
+        
         //PLAYTESTING = 0;
         FREEFORM = false;
 
@@ -191,93 +194,97 @@ public class EntityInfo : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!FREEFORM)
+        if (!hitPointManager.isDead())
         {
-            setPhysics();
-        }
-        
-        switch (state)
-        {
-            case 3: // Crouching
-                stopHorizontalMovement();
-                break;
-            case 0: // Idle
-                stopHorizontalMovement();
-                break;
-            case 1: // Move right
-                if (crouchToStandTimer.isFinished())
-                {
-                    movementVector += transform.TransformDirection(Vector3.forward) * startAcceleration * facing * Time.deltaTime;
-                }
-
-                break;
-            case 2: // Move left
-                if (crouchToStandTimer.isFinished())
-                {
-                    movementVector += transform.TransformDirection(Vector3.back) * startAcceleration * facing * Time.deltaTime;
-                }
-
-                break;
-        }
-
-        // Crouch timer
-        if (state != 3 && !crouchToStandTimer.isFinished())
-        {
-            crouchToStandTimer.Update(Time.deltaTime);
-            characterController.height = crouchToStandTimer.getHeight();
-            Vector3 tempVector = characterController.center;
-            tempVector.y = crouchToStandTimer.getY();
-            characterController.center = tempVector;
-
-        } else if (state == 3 && !standToCrouchTimer.isFinished())
-        {
-            standToCrouchTimer.Update(Time.deltaTime);
-            characterController.height = standToCrouchTimer.getHeight();
-            Vector3 tempVector = characterController.center;
-            tempVector.y = standToCrouchTimer.getY();
-            characterController.center = tempVector;
-
-        }
-
-        // Jumping
-        if (!jumpTimer.isFinished())
-        {
-            jumpTimer.Update(Time.deltaTime);
-            characterController.height = jumpTimer.getHeight();
-            Vector3 tempVector = characterController.center;
-            tempVector.y = jumpTimer.getY();
-            characterController.center = tempVector;
-            if (jumpTimer.isFinished())
+            if (!FREEFORM)
             {
-                inAir = true;
-                movementVector.y = jumpSpeed;
+                setPhysics();
             }
-        }
 
-        // Landing
-        if (!landTimer.isFinished())
-        {
-            landTimer.Update(Time.deltaTime);
-            characterController.height = landTimer.getHeight();
-            Vector3 tempVector = characterController.center;
-            tempVector.y = landTimer.getY();
-            characterController.center = tempVector;
+            switch (state)
+            {
+                case 3: // Crouching
+                    stopHorizontalMovement();
+                    break;
+                case 0: // Idle
+                    stopHorizontalMovement();
+                    break;
+                case 1: // Move right
+                    if (crouchToStandTimer.isFinished())
+                    {
+                        movementVector += transform.TransformDirection(Vector3.forward) * startAcceleration * facing * Time.deltaTime;
+                    }
 
-        }
+                    break;
+                case 2: // Move left
+                    if (crouchToStandTimer.isFinished())
+                    {
+                        movementVector += transform.TransformDirection(Vector3.back) * startAcceleration * facing * Time.deltaTime;
+                    }
 
-        // Gravity
-        if (!characterController.isGrounded || inAir)
-        {
-            movementVector += transform.TransformDirection(Vector3.up) * gravity * Time.deltaTime;
-        }
-        else 
-        {
-            movementVector.y = gravity;
-        }
+                    break;
+            }
 
-        // Clamp
-        movementVector.z = Mathf.Clamp(movementVector.z, -topSpeed, topSpeed);
-        movementVector.y = Mathf.Clamp(movementVector.y, -topFallSpeed, topFallSpeed);
+            // Crouch timer
+            if (state != 3 && !crouchToStandTimer.isFinished())
+            {
+                crouchToStandTimer.Update(Time.deltaTime);
+                characterController.height = crouchToStandTimer.getHeight();
+                Vector3 tempVector = characterController.center;
+                tempVector.y = crouchToStandTimer.getY();
+                characterController.center = tempVector;
+
+            }
+            else if (state == 3 && !standToCrouchTimer.isFinished())
+            {
+                standToCrouchTimer.Update(Time.deltaTime);
+                characterController.height = standToCrouchTimer.getHeight();
+                Vector3 tempVector = characterController.center;
+                tempVector.y = standToCrouchTimer.getY();
+                characterController.center = tempVector;
+
+            }
+
+            // Jumping
+            if (!jumpTimer.isFinished())
+            {
+                jumpTimer.Update(Time.deltaTime);
+                characterController.height = jumpTimer.getHeight();
+                Vector3 tempVector = characterController.center;
+                tempVector.y = jumpTimer.getY();
+                characterController.center = tempVector;
+                if (jumpTimer.isFinished())
+                {
+                    inAir = true;
+                    movementVector.y = jumpSpeed;
+                }
+            }
+
+            // Landing
+            if (!landTimer.isFinished())
+            {
+                landTimer.Update(Time.deltaTime);
+                characterController.height = landTimer.getHeight();
+                Vector3 tempVector = characterController.center;
+                tempVector.y = landTimer.getY();
+                characterController.center = tempVector;
+
+            }
+
+            // Gravity
+            if (!characterController.isGrounded || inAir)
+            {
+                movementVector += transform.TransformDirection(Vector3.up) * gravity * Time.deltaTime;
+            }
+            else
+            {
+                movementVector.y = gravity;
+            }
+
+            // Clamp
+            movementVector.z = Mathf.Clamp(movementVector.z, -topSpeed, topSpeed);
+            movementVector.y = Mathf.Clamp(movementVector.y, -topFallSpeed, topFallSpeed);
+        }
     }
 
     void stopHorizontalMovement()
@@ -294,6 +301,7 @@ public class EntityInfo : MonoBehaviour {
         {
             movementVector += transform.TransformDirection(Vector3.forward) * stopAcceleration * facing * Time.deltaTime;
         }
+        
     }
 
     

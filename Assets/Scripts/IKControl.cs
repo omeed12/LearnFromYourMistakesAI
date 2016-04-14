@@ -9,6 +9,7 @@ public class IKControl : MonoBehaviour
 {
 
     protected Animator animator;
+    HitPointManager hitPointManager;
 
     public bool ikActive = true;
     public Transform rightHandObj = null;
@@ -18,12 +19,13 @@ public class IKControl : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        hitPointManager = gameObject.GetComponent<HitPointManager>();
     }
 
     //a callback for calculating IK
     void OnAnimatorIK()
     {
-        if (animator)
+        if (!hitPointManager.isDead() && animator)
         {
 
             //if the IK is active, set the position and rotation directly to the goal. 
