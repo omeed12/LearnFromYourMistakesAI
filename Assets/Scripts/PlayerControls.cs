@@ -18,6 +18,7 @@ public class PlayerControls : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        Application.targetFrameRate = 60;
         entityInfo = gameObject.GetComponent<EntityInfo>();
         hitPointManager = gameObject.GetComponent<HitPointManager>();
         Cursor.visible = false;
