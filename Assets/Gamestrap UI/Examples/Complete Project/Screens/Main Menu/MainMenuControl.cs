@@ -30,6 +30,10 @@ namespace Gamestrap
         {
 			Application.LoadLevel ("Scene1");
         }
+        public void RestartClick()
+        {
+            Application.LoadLevel("MainMenu");
+        }
 
         public void AchievementsClick()
         {
