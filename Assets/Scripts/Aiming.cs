@@ -5,6 +5,7 @@ public class Aiming : MonoBehaviour {
     
     public GameObject mainCharacter = null;
     CharacterController mainCharController;
+    HitPointManager hitPointManager;
     public GameObject aimPoint = null;
     
 
@@ -20,13 +21,14 @@ public class Aiming : MonoBehaviour {
     {
         currentRadius = aimingRadius;
         scale = transform.parent.localScale.z;
+        hitPointManager = mainCharacter.GetComponent<HitPointManager>();
         
         
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (mainCharacter && aimPoint)
+        if (!hitPointManager.isDead() && mainCharacter && aimPoint)
         {
             // mainCharacter.transform.localScale.y * 
             recoilRadius = aimingRadius * 0.9f;

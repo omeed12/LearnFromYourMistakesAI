@@ -5,12 +5,14 @@ public class MoveRex : MonoBehaviour {
 
 	Animator anim;
 	GameObject player;
-	GameObject go1;
-	GameObject go2;
-	GameObject go3;
+	public GameObject leftScreen;
+	public GameObject rightScreen;
 	int facing = -1;
 	string attack;
 	LearningSystem ls;
+
+    double winTimer;
+    double winTime;
 
 	public int BiteDMG;
 	public int TailAttackDMG;
@@ -24,11 +26,38 @@ public class MoveRex : MonoBehaviour {
 
 	public GameObject firePrefab; //flamethrower prefab
 	public Rigidbody wall;	//wall of fire prefab
+    public Rigidbody firebox; // collider
 	public Rigidbody projectile; //projectile prefab
+    public Rigidbody biteball; // prefab
+    public Rigidbody tailbox; // prefab
 	public Transform fbSpawn;//spawn the projectile
 	public Transform fireSpawn;//spawn the flamethrower
 
-	IEnumerator fireproj(){
+    IEnumerator bitecollider()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        Rigidbody bb = GetComponent<Rigidbody>();
+        Vector3 bitePosition = gameObject.transform.position;
+        bitePosition.y = bitePosition.y + 2.5f;
+        bitePosition.z = bitePosition.z + 3 * facing;
+        bb = Instantiate(biteball, bitePosition, Quaternion.identity) as Rigidbody;
+        Destroy(bb.gameObject, 0.8f);
+    }
+
+    IEnumerator tailcollider()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        Rigidbody tb = GetComponent<Rigidbody>();
+        Vector3 tailPosition = gameObject.transform.position;
+        
+        tailPosition.z = tailPosition.z + 2.6f * facing;
+        tb = Instantiate(tailbox, tailPosition, Quaternion.identity) as Rigidbody;
+        Destroy(tb.gameObject, 0.8f);
+    }
+
+    IEnumerator fireproj(){
 		yield return new WaitForSeconds(2.0f);
 		
 		Rigidbody fb = GetComponent<Rigidbody>(); 
@@ -42,18 +71,21 @@ public class MoveRex : MonoBehaviour {
 		
 		Rigidbody fb1 = GetComponent<Rigidbody> ();
 		fb1 = Instantiate (wall, new Vector3 (-4.0f, 3.0f, -10.0f), Quaternion.Euler(0,90,0)) as Rigidbody;
-		Destroy (fb1.gameObject, 7.5f);
+        Destroy(fb1.gameObject, 5f);
 
-	}
-	
-	IEnumerator firesprd1(){
-		yield return new WaitForSeconds (2.0f);
+        yield return new WaitForSeconds(1.5f);
+        Rigidbody fb2 = GetComponent<Rigidbody>();
+        fb2 = Instantiate(firebox, new Vector3(0, 0, -10f), Quaternion.Euler(0, 0, 0)) as Rigidbody;
+        Destroy(fb2.gameObject, 3.5f);
+
+
+    }
+
+    IEnumerator firesprd1(){
+		yield return new WaitForSeconds (2.1f);
 		
 		GameObject spreadfire;
-		spreadfire = Instantiate (firePrefab, fireSpawn.position,Quaternion.Euler(0,0,0)) as GameObject;
-        //PlayerCollisionManager pcManager = spreadfire.gameObject.GetComponent<PlayerCollisionManager>();
-        //pcManager.attackId = SpreadFireID;
-        //pcManager.bossParent = gameObject;
+		spreadfire = Instantiate (firePrefab, fireSpawn.position, gameObject.transform.rotation) as GameObject;
 
 		Destroy (spreadfire.gameObject,2.0f);
 		
@@ -64,13 +96,11 @@ public class MoveRex : MonoBehaviour {
 	void Start () {
 		anim = GetComponent<Animator>();
 		ls = GetComponent<LearningSystem>();
-		//character = GetComponent<CharacterController>();
 		
 		player = GameObject.Find("Player");
-		//gameObject = GameObject.Find("DRAGON_REX_ALPHA");
-		go1 = GameObject.Find("GameObject1");
-		go2 = GameObject.Find("GameObject2");
-		go3 = GameObject.Find("GameObject3");
+
+        winTime = 10f;
+        winTimer = 0;
 	}
 
 	internal void generateAttack() {
@@ -104,35 +134,18 @@ public class MoveRex : MonoBehaviour {
 		}
 	}
 
-//	void MoveToPoint() {
-//		anim.SetTrigger ("walk");
-//		Vector3 targetPosition = go3.transform.position;
-//
-//		if ((targetPosition - transform.position).magnitude < 1) {
-//			anim.SetTrigger ("death");
-//			return;
-//		}
-//
-//		Vector3 movDiff = targetPosition - transform.position;
-//		Vector3 movDir = movDiff.normalized * 25f * Time.deltaTime;
-//
-//		if (movDir.sqrMagnitude < movDiff.sqrMagnitude) {
-//			character.Move (movDir);
-//		} else {
-//			character.Move (movDiff);
-//		}
-//	}
-
 
 	void Bite(){
 		attack = "bite";
-		anim.SetTrigger ("bite");
+        anim.SetTrigger("bite");
+        StartCoroutine("bitecollider");
 	}
 
 	void TailAttack(){
 		attack = "tailAttack";
 		anim.SetTrigger ("tailAttack");
-	}
+        StartCoroutine("tailcollider");
+    }
 
 	void Fireball(){
 		attack = "spitFireball";
@@ -148,29 +161,38 @@ public class MoveRex : MonoBehaviour {
 
 	void teleport() {
 		if (attack == "bite") {
-			gameObject.transform.position = new Vector3(transform.position.x, go3.transform.position.y, go3.transform.position.z);
+            int flip = 1;
+            if (Random.value < 0.5)
+                flip = -1;
+			gameObject.transform.position = new Vector3(transform.position.x, player.transform.position.y, player.transform.position.z + 3 * flip);
 		} 
-		else if (attack == "tailAttack"){
-			gameObject.transform.position = new Vector3(transform.position.x,go3.transform.position.y,go3.transform.position.z);
+		else if (attack == "tailAttack")
+        {
+            int flip = 1;
+            if (Random.value < 0.5)
+                flip = -1;
+            gameObject.transform.position = new Vector3(transform.position.x, player.transform.position.y, player.transform.position.z + 3 * flip);
 		}
 		
-		else if (attack == "spitFireball"){
+		else if (attack == "spitFireball")
+        {
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				gameObject.transform.position = new Vector3(transform.position.x,0,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,leftScreen.transform.position.z);
 			}
 			else {
-				gameObject.transform.position = new Vector3(transform.position.x,0,go2.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,rightScreen.transform.position.z);
 			}
 		}
 		
-		else if (attack == "spreadFire"){
+		else if (attack == "spreadFire")
+        {
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				gameObject.transform.position = new Vector3(transform.position.x,0,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,leftScreen.transform.position.z);
 			}
 			else {
-				gameObject.transform.position = new Vector3(transform.position.x,0,go2.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,0,rightScreen.transform.position.z);
 			}
 		}
 	}
@@ -224,20 +246,34 @@ public class MoveRex : MonoBehaviour {
         {
             transform.position = new Vector3(0, transform.position.y, transform.position.z);
 
-
-            if (transform.position.z < player.transform.position.z)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") || (attack != "spitFireball" && attack != "spreadFire"))
             {
-                setFacing(1);
+                if (transform.position.z < player.transform.position.z)
+                {
+                    setFacing(1);
+                }
+                else
+                {
+                    setFacing(-1);
+                }
             }
             else
             {
-                setFacing(-1);
+                if (transform.position.z <= leftScreen.transform.position.z)
+                {
+                    setFacing(1);
+                }
+                else
+                {
+                    setFacing(-1);
+                }
             }
-
             if (gameObject.GetComponent<HitPointManager>().isDead())
             {
                 anim.SetTrigger("death");
             }
+
+            /*
 
             if (Input.GetKeyDown("up"))
             {
@@ -257,6 +293,17 @@ public class MoveRex : MonoBehaviour {
             if (Input.GetKeyDown("left"))
             {
                 TailAttack();
+            }
+            */
+        } else
+        {
+            if (winTimer < winTime)
+            {
+                winTimer += Time.deltaTime;
+            } else
+            {
+                Cursor.visible = true;
+                Application.LoadLevel("YouWin");
             }
         }
         

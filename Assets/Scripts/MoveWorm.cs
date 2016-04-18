@@ -6,10 +6,8 @@ public class MoveWorm : MonoBehaviour {
 	Animator anim;
     GameObject player;
     public GameObject spitPrefab;
-	GameObject go1;
-	GameObject go2;
-	GameObject go3;
-	GameObject go4;
+	public GameObject leftScreen;
+	public GameObject rightScreen;
 	int facing = -1;
 	string attack;
 
@@ -27,6 +25,8 @@ public class MoveWorm : MonoBehaviour {
 	public Rigidbody projectile; //projectile prefab
 	public Transform pukeSpawn; //spawns the puke
 	public Rigidbody wall;//poison area prefab
+    public Rigidbody lowBiteBox;
+    public Rigidbody highBiteBox;
 	
 	IEnumerator fireproj(){
 		yield return new WaitForSeconds (2.4f);
@@ -36,18 +36,30 @@ public class MoveWorm : MonoBehaviour {
 		sb.AddForce (-sbSpawn.forward * 1000);
 		Destroy (sb.gameObject,2.5f);
 	}
-	
-//	IEnumerator pukesprd1(){
-//		yield return new WaitForSeconds (0.5f);
-//		
-//		GameObject spreadfire;
-//		spreadfire = Instantiate (spitPrefab, pukeSpawn.position,Quaternion.Euler(90,180,0)) as GameObject;
-//		Destroy (spreadfire.gameObject,2.0f);
-//		
-//		StartCoroutine ("pukesprd2");
-//	}
-	
-	IEnumerator pukesprd2(){
+
+    IEnumerator bitecollider()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        Rigidbody bb = GetComponent<Rigidbody>();
+        Vector3 bitePosition = gameObject.transform.position;
+        bitePosition.y = bitePosition.y + 2.5f;
+        bitePosition.z = bitePosition.z + 5 * facing;
+        bb = Instantiate(highBiteBox, bitePosition, Quaternion.identity) as Rigidbody;
+        Destroy(bb.gameObject, 0.4f);
+    }
+
+    IEnumerator lowbitecollider()
+    {
+        yield return new WaitForSeconds(1.1f);
+
+        Rigidbody bb = GetComponent<Rigidbody>();
+        Vector3 bitePosition = gameObject.transform.position;
+        bb = Instantiate(lowBiteBox, bitePosition, Quaternion.identity) as Rigidbody;
+        Destroy(bb.gameObject, 1f);
+    }
+
+    IEnumerator pukesprd2(){
 		yield return new WaitForSeconds (2.5f);
 		
 		Rigidbody fb1 = GetComponent<Rigidbody> ();
@@ -62,10 +74,6 @@ public class MoveWorm : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		ls = GetComponent<LearningSystem> ();
         player = GameObject.Find("Player");
-		go1 = GameObject.Find("GameObject1");
-		go2 = GameObject.Find("GameObject2");
-		go3 = GameObject.Find("GameObject3");
-		go4 = GameObject.Find("GameObject4");
 
     }
 
@@ -102,13 +110,15 @@ public class MoveWorm : MonoBehaviour {
 	void Bite(){
 		attack = "bite";
 		anim.SetTrigger ("disHigh0");
+        StartCoroutine("bitecollider");
 
-	} 
+    } 
 
 	void UndergroundBite(){
 		attack = "undergroundbite";
 		anim.SetTrigger ("disappearHigh");
-	}
+        StartCoroutine("lowbitecollider");
+    }
 	
 
 	void Spit(){
@@ -124,31 +134,36 @@ public class MoveWorm : MonoBehaviour {
 	}
 
 	void teleport() {
-		if (attack == "bite") {
-			gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go4.transform.position.z);
+		if (attack == "bite")
+        {
+            int flip = 1;
+            if (Random.value < 0.5)
+                flip = -1;
+            gameObject.transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + 5 * flip);
 		} 
 		else if (attack == "undergroundbite"){
-			gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go2.transform.position.z);
+			gameObject.transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z);
 		}
 		
 		else if (attack == "spit"){
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,leftScreen.transform.position.z);
 			}
 			else {
-				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go3.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,rightScreen.transform.position.z);
 			}
 		}
 		
 		else if (attack == "roarpuke"){
 			int choice = Random.Range(1,3);
 			if(choice == 1) {
-				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go1.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,leftScreen.transform.position.z);
 			}
 			else {
-				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,go3.transform.position.z);
+				gameObject.transform.position = new Vector3(transform.position.x,transform.position.y,rightScreen.transform.position.z);
 			}
+            Debug.Log(gameObject.transform.position);
 		}
 	}
 
@@ -206,19 +221,33 @@ public class MoveWorm : MonoBehaviour {
 
 		transform.position = new Vector3 (500,transform.position.y,transform.position.z) ;
 
-		if (transform.position.z < player.transform.position.z)
-		{
-			setFacing(1);
-		}
-		else
-		{
-			setFacing(-1);
-		}
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") || (attack != "roarpuke" && attack != "spit"))
+        {
+            if (transform.position.z < player.transform.position.z)
+            {
+                setFacing(1);
+            }
+            else
+            {
+                setFacing(-1);
+            }
+        } else
+        {
+            if (transform.position.z <= leftScreen.transform.position.z)
+            {
+                setFacing(1);
+            } else
+            {
+                setFacing(-1);
+            }
+        }
 
 		if (gameObject.GetComponent<HitPointManager> ().isDead()) {
 			anim.SetTrigger ("isDead");
 		}
 
+        /*
 		if (Input.GetKeyDown ("up")) {
 			Spit();
 
@@ -236,5 +265,6 @@ public class MoveWorm : MonoBehaviour {
 		if (Input.GetKeyDown ("left")) {
 			Puke();
 		}
+        */
 	}
 }

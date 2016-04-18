@@ -10,18 +10,20 @@ public class StateHandler : MonoBehaviour {
     double timer;
     Animator anim;
     MethodHandler methodHandler;
+    HitPointManager hitPointManager;
 
 	// Use this for initialization
 	void Start () {
         timer = 0;
         anim = GetComponent<Animator>();
         methodHandler = GetComponent<MethodHandler>();
+        hitPointManager = GetComponent<HitPointManager>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
-        if (control && anim.GetCurrentAnimatorStateInfo(0).IsName("idle")) // Idle
+        if (control && !hitPointManager.isDead() && anim.GetCurrentAnimatorStateInfo(0).IsName("idle")) // Idle
         {
             if (timer < idleTime)
             {
